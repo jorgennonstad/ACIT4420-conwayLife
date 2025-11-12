@@ -1,6 +1,6 @@
 from conwayLife import Board
 from conwayLife.patterns import load_pattern
-from conwayLife.utils import clear_console  # <-- import the helper
+from conwayLife import clear_console, choose_pattern
 import time
 
 def main():
@@ -11,12 +11,20 @@ def main():
 
     board = Board(rows, cols)
 
-    pattern_file = "patterns/glider.txt"
+    # Let the user choose a pattern
+    pattern_file = choose_pattern()
     pattern = load_pattern(pattern_file)
-    board.apply_pattern(pattern, top=0, left=0)
+
+    # Center the pattern on the board
+    pattern_rows = len(pattern)
+    pattern_cols = len(pattern[0])
+    top = (board.rows - pattern_rows) // 2
+    left = (board.cols - pattern_cols) // 2
+
+    board.apply_pattern(pattern, top=top, left=left)
 
     for round in range(rounds):
-        clear_console()  # <-- clear before display
+        clear_console()  # clear before display
         print(f"Round {round + 1}:")
         board.display()
         board.run_rules()
