@@ -1,0 +1,1 @@
+pattern_filepath = "conwayLife/patterns/glider.txt"
