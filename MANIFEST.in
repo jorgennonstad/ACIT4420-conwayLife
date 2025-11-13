@@ -1,0 +1,2 @@
+recursive-include conwayLife/patterns *.txt
+recursive-include conwayLife/logs *

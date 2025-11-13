@@ -1,4 +1,4 @@
-from .rules import RULES
+from conwayLife.rules import RULES
 
 
 class Board:
@@ -29,7 +29,7 @@ class Board:
             print(line)
 
     def apply_pattern(self, pattern, top=0, left=0):
-        # go through each row of the pattern
+        out_of_bounds = False
         row_index = 0
         for row in pattern:
             col_index = 0
@@ -37,14 +37,17 @@ class Board:
                 board_row = top + row_index
                 board_col = left + col_index
 
-                # check if this cell fits on the board
-                if board_row >= 0 and board_row < self.rows:
-                    if board_col >= 0 and board_col < self.cols:
-                        # apply the cell to the board
-                        self.grid[board_row][board_col] = cell
+                if 0 <= board_row < self.rows and 0 <= board_col < self.cols:
+                    self.grid[board_row][board_col] = cell
+                else:
+                    out_of_bounds = True  # mark that some cells are outside
 
                 col_index += 1
             row_index += 1
+
+        if out_of_bounds:
+            print("⚠️ Warning: Some cells of the pattern were outside the board")
+
 
     def run_rules(self):
         """Apply all registered rules simultaneously."""
