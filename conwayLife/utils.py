@@ -1,24 +1,18 @@
 import os
 import platform
 import importlib.resources
-
+import re
 
 def clear_console():
-    """Clear the terminal screen."""
+    # Clear the terminal screen
     if platform.system() == "Windows":
         os.system("cls")
     else:
         os.system("clear")
 
-import os
-import re
 
 def choose_pattern():
-    """
-    Let the user choose a pattern from the conwayLife package patterns folder,
-    or create a custom one manually.
-    """
-    # Use importlib.resources to get the folder path
+    # Let the user choose a pattern or create a custom one
     with importlib.resources.path("conwayLife", "patterns") as pattern_folder_path:
         pattern_folder = str(pattern_folder_path)
 
@@ -34,16 +28,15 @@ def choose_pattern():
         while True:
             choice = input(f"Enter a number (1-{len(files) + 1}): ")
 
-            # If user chooses an existing file
-            if choice.isdigit():
-                choice = int(choice)
-                if 1 <= choice <= len(files):
-                    return os.path.join(pattern_folder, files[choice - 1])
+            try:
+                choice = int(choice)  # try to convert input to integer
 
-                # If user wants to make their own
+                if 1 <= choice <= len(files):
+                    # Return path to selected pattern file
+                    return os.path.join(pattern_folder, files[choice - 1])
                 elif choice == len(files) + 1:
-                    print("\nEnter your pattern line by line.")
-                    print("Use 'O' for alive and '.' for dead cells.")
+                    # Create custom pattern
+                    print("Enter your pattern line by line using 'O' for alive and '.' for dead.")
                     print("Press ENTER on an empty line to finish.\n")
 
                     custom_pattern = []
@@ -52,7 +45,7 @@ def choose_pattern():
                         if line == "":
                             break
                         if not re.fullmatch(r"[O.]+", line):
-                            print("❌ Invalid input. Only 'O' and '.' are allowed.")
+                            print("Invalid input. Only 'O' and '.' are allowed.")
                             continue
                         custom_pattern.append(line)
 
@@ -65,37 +58,38 @@ def choose_pattern():
                         for line in custom_pattern:
                             f.write(line + "\n")
 
-                    print(f"\n✅ Custom pattern saved to {custom_path}")
+                    print(f"Custom pattern saved to {custom_path}")
                     return custom_path
 
-            print("Invalid choice, try again.")
-
+            except ValueError:
+                # Input was not a valid integer
+                print("Invalid choice, please enter a number.")
 
 
 
 def get_valid_int(prompt, min_value=1):
-    """Prompt until user enters a valid positive integer >= min_value."""
+    # Prompt until user enters a valid integer >= min_value
     while True:
         value = input(prompt)
-        if not re.match(r"^\d+$", value):  # only digits allowed
-            print("❌ Please enter a number (no letters or symbols).")
+        if not re.match(r"^\d+$", value):
+            print("Please enter a number (no letters or symbols).")
             continue
         value = int(value)
         if value < min_value:
-            print(f"❌ Value must be at least {min_value}.")
+            print(f"Value must be at least {min_value}.")
         else:
             return value
 
 
 def get_valid_float(prompt, min_value=0):
-    """Prompt until user enters a valid positive float (for speed)."""
+    # Prompt until user enters a valid float >= min_value
     while True:
         value = input(prompt)
-        if not re.match(r"^\d*\.?\d+$", value):  # allow digits and one dot
-            print("❌ Please enter a valid number (like 0.5 or 2).")
+        if not re.match(r"^\d*\.?\d+$", value):
+            print("Please enter a valid number (like 0.5 or 2).")
             continue
         value = float(value)
         if value < min_value:
-            print(f"❌ Value must be at least {min_value}.")
+            print(f"Value must be at least {min_value}.")
         else:
             return value

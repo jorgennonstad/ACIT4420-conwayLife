@@ -1,3 +1,0 @@
-conwayLife
-main
-tests

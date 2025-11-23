@@ -1,0 +1,29 @@
+# Python bytecode
+__pycache__/
+*.py[cod]
+
+# Virtual environments
+env/
+venv/
+.venv/
+
+# Distribution / packaging
+*.egg
+*.egg-info/
+dist/
+build/
+
+# Logs
+logs/
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Pytest cache
+.pytest_cache/
+
+# IDE/editor folders
+.vscode/
+.idea/
